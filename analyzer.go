@@ -27,7 +27,7 @@ func NewAnalyzer() *analysis.Analyzer {
 	flagSet.BoolVar(&fc.skipTests, "skipTests", false, "should the linter execute on test files as well")
 
 	return &analysis.Analyzer{
-		Name:  "floatequal",
+		Name:  "floatcompare",
 		Doc:   "Search for float comparison, since these are potential errors",
 		Run:   fc.run,
 		Flags: flagSet,
