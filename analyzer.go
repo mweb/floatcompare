@@ -17,8 +17,6 @@ import (
 type floatcompare struct {
 	equalOnly bool
 	skipTests bool
-
-	pass *analysis.Pass
 }
 
 func NewAnalyzer() *analysis.Analyzer {
@@ -36,21 +34,21 @@ func NewAnalyzer() *analysis.Analyzer {
 	}
 }
 
-func (fc *floatcompare) isCheckExpr(node ast.Node) {
+func (fc *floatcompare) isCheckExpr(node ast.Node, pass *analysis.Pass) {
 	switch expr := node.(type) {
 	case *ast.BinaryExpr:
-		fc.checkBinExpr(expr)
+		fc.checkBinExpr(expr, pass)
 	case *ast.SwitchStmt:
-		if fc.isFloat(expr.Tag) {
-			fc.pass.Reportf(expr.Tag.Pos(), "float comparison with switch statement")
+		if fc.isFloat(expr.Tag, pass) {
+			pass.Reportf(expr.Tag.Pos(), "float comparison with switch statement")
 			return
 		}
 	}
 }
 
-func (fc *floatcompare) isFloat(expr ast.Expr) bool {
+func (fc *floatcompare) isFloat(expr ast.Expr, pass *analysis.Pass) bool {
 
-	t := fc.pass.TypesInfo.TypeOf(expr)
+	t := pass.TypesInfo.TypeOf(expr)
 	if t == nil {
 		return false
 	}
@@ -64,7 +62,7 @@ func (fc *floatcompare) isFloat(expr ast.Expr) bool {
 	return true
 }
 
-func (fc *floatcompare) checkBinExpr(binExpr *ast.BinaryExpr) {
+func (fc *floatcompare) checkBinExpr(binExpr *ast.BinaryExpr, pass *analysis.Pass) {
 	if fc.equalOnly && !(binExpr.Op == token.EQL || binExpr.Op == token.NEQ) {
 		return
 	}
@@ -73,24 +71,23 @@ func (fc *floatcompare) checkBinExpr(binExpr *ast.BinaryExpr) {
 		return
 	}
 
-	if !fc.isFloat(binExpr.X) || !fc.isFloat(binExpr.Y) {
+	if !fc.isFloat(binExpr.X, pass) || !fc.isFloat(binExpr.Y, pass) {
 		return
 	}
 
-	fc.pass.Reportf(binExpr.Pos(), "float comparison found %q",
-		render(fc.pass.Fset, binExpr))
+	pass.Reportf(binExpr.Pos(), "float comparison found %q",
+		render(pass.Fset, binExpr))
 
 }
 
 func (fc *floatcompare) run(pass *analysis.Pass) (interface{}, error) {
-	fc.pass = pass
 	for _, f := range pass.Files {
 		if fc.skipTests && strings.HasSuffix(pass.Fset.Position(f.Pos()).Filename, "_test.go") {
 			continue
 		}
 
 		ast.Inspect(f, func(node ast.Node) bool {
-			fc.isCheckExpr(node)
+			fc.isCheckExpr(node, pass)
 			return true
 		})
 	}
