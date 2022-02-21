@@ -1,6 +1,6 @@
 # floatcompare
 
-go linter to search for float comparison.
+Go linter to search for float comparison.
 
 ## Why are float comparisons problematic?
 
@@ -62,4 +62,27 @@ omit test files.
 
 ## How to use the linter
 
-TODO
+### Install
+
+    go install github.com/mweb/floatcompare/cmd/floatcompare@latest
+
+### Usage
+
+Call this within your project.
+
+    floatcompare ./...
+
+There are two parameters available to disable certain checks:
+
+    --skipTests (to skip all *_test.go files)
+    --equalOnly (only warn for == and != comparison)
+
+## Credits
+
+This tool is built on top of the excellent go/analysis package that makes it
+easy to write custom analyzers in Go. And the blog post "[Using go/analsysis to
+write a custom linter](https://arslan.io/2019/06/13/using-go-analysis-to-write-a-custom-linter/)"
+helped me to get started with this linter.
+
+
+Thanks to [Fatih Arslan](https://github.com/fatih)
