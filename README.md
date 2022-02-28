@@ -1,3 +1,5 @@
+[![License](https://img.shields.io/github/license/mweb/floatcompare)](/LICENSE)
+
 # floatcompare
 
 Go linter to search for float comparison.
