@@ -1,3 +1,4 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/mweb/floatcompare)](https://goreportcard.com/report/github.com/mweb/floatcompare)
 [![License](https://img.shields.io/github/license/mweb/floatcompare)](/LICENSE)
 
 # floatcompare
