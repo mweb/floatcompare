@@ -19,6 +19,7 @@ type floatcompare struct {
 	skipTests bool
 }
 
+// NewAnalyzer create a new analyzer for float compare
 func NewAnalyzer() *analysis.Analyzer {
 	fc := floatcompare{}
 	var flagSet flag.FlagSet
