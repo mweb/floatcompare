@@ -1,4 +1,5 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/mweb/floatcompare)](https://goreportcard.com/report/github.com/mweb/floatcompare)
+[![Coverage Status](https://coveralls.io/repos/github/mweb/floatcompare/badge.svg?branch=main)](https://coveralls.io/github/mweb/floatcompare?branch=main)
 [![License](https://img.shields.io/github/license/mweb/floatcompare)](/LICENSE)
 
 # floatcompare
