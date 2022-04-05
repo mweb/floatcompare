@@ -5,6 +5,7 @@ package floatcompare
 import (
 	"bytes"
 	"flag"
+	"fmt"
 	"go/ast"
 	"go/printer"
 	"go/token"
@@ -97,7 +98,7 @@ func (fc *floatcompare) run(pass *analysis.Pass) (interface{}, error) {
 func render(fset *token.FileSet, x interface{}) string {
 	var buf bytes.Buffer
 	if err := printer.Fprint(&buf, fset, x); err != nil {
-		panic(err)
+		return fmt.Sprintf("ERROR during token parsing: %v", err)
 	}
 	return buf.String()
 }
